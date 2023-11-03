@@ -8,6 +8,7 @@ Note: You can't actually run the code without sending an http request. To test t
 
 This code is owned by me, and only me, the owner of the storcale@gmail.com google account.
 
+If you want to use this code, of part of this code, just contact me by discord or email :)
 ## Current commands:
 
 ### /search-user [callsign] [division]
