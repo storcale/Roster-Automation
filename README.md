@@ -6,9 +6,9 @@ All the code beneath it is the actual command code.
 
 This code is owned by me, and only me, the owner of the storcale@gmail.com google account.
 
-# Current commands:
+## Current commands:
 
-## /search-user [callsign] [division]
+### /search-user [callsign] [division]
 
 Callsign: integer, the callsign of the person to search.
 Division: string, in which division (sheet) to search the user. 
