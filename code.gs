@@ -1,5 +1,5 @@
 
-
+// Read README.MD before going trough the code.
 
 var ss = SpreadsheetApp.getActiveSpreadsheet()
 var emssheet = ss.getSheetByName("EMS")
