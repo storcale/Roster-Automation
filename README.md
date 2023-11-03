@@ -20,8 +20,8 @@ Method: GET http Request, query: command,callsign,division
 
 ### /add-user [callsign] [rank] [discord] [roblox] [rank]
 
-Callsign: integer, the callsign of the person
-Rank: string, the rank of the person: Where will the person added 
+Callsign: integer, the callsign of the person.
+Rank: string, the rank of the person: Where will the person added.
 Discord: The discord username of the person
 Roblox: The roblox username of the person
 
