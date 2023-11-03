@@ -1,6 +1,7 @@
 
 // Read README.MD before going trough the code.
 
+
 var ss = SpreadsheetApp.getActiveSpreadsheet()
 var emssheet = ss.getSheetByName("EMS")
 
@@ -45,22 +46,26 @@ function doPost(e) {
   var log = "Processed at: " + date + ".";
   Logger.log(log)
   var command = e.parameter.command // Get what command was ran
-  var requestData = e.postData.contents;
   
  switch(command){
   
   case "addUser":
-    Logger.log(requestData.field1)
-    addUser(requestData.field1,requestData.field2,requestData.field3,requestData.field4,requestData.field5) 
-      Logger.log("Sucessfully added use to the roster.")
-      var output = "Sucessfully added use to the roster."
-      return ContentService.createTextOutput(output + "\nRequest Data: " + requestData).setMimeType(ContentService.MimeType.TEXT);
-    
-     // var error = "**Error 404:** No rank named like this was found."
-     // return ContentService.createTextOutput(error).setMimeType(ContentService.MimeType.TEXT);
-    
+  var division = e.parameter.division
+  var rank = e.parameter.rank
+  var discord = e.parameter.discord 
+  var roblox = e.parameter.roblox
+  var callsign = e.parameter.callsign
+
+   if( addUser(rank,division,discord,roblox,callsign) != error404){
+    Logger.log("Sucessfully added user to the roster.")
+    var output = "\n\nSucessfully added user to the roster."
+    return ContentService.createTextOutput(log + output ).setMimeType(ContentService.MimeType.TEXT);
+   }else{
+      var error = "**Error 404:** No rank named like this was found."
+      return ContentService.createTextOutput(error).setMimeType(ContentService.MimeType.TEXT);
+   }
   break
- }
+  }
 }
 
 function addUser(rank,division,discord,roblox, callsign){
@@ -75,13 +80,12 @@ function addUser(rank,division,discord,roblox, callsign){
     divisionSheet.appendRow(["",callsign,rank,roblox,discord])
     var maxRows = divisionSheet.getMaxRows()
     divisionSheet.moveRows(divisionSheet.getRange(maxRows,maxcolumns), rankRow)
-    divisionSheet.getRange("A10:" + divisionSheet.getRange(10,maxcolumns).getA1Notation()).copyFormatToRange(divisionSheet.getSheetId(),1,maxcolumns,rankRow,rankRow + 1)
+    divisionSheet.getRange("A15:" + divisionSheet.getRange(10,maxcolumns).getA1Notation()).copyFormatToRange(divisionSheet.getSheetId(),1,maxcolumns,rankRow,rankRow + 1)
   }
 
 }
 
 function searchRank(rank,division){
-
   var divisionSheet = ss.getSheetByName(division)
   var  column = divisionSheet.getRange("C:C")
   var textFinder = column.createTextFinder(rank)
@@ -92,6 +96,7 @@ function searchRank(rank,division){
   }else{
     return rankRow = rankCell.getRow()
   }
+  
 }
 
 
@@ -150,12 +155,11 @@ function getDivisions(callsign,division) {
   return error404
  }
 }
-function test() {
+function test_() {
   var maxcolumns = emssheet.getMaxColumns()
   Logger.log(emssheet.getRange("A10:" + emssheet.getRange(10,maxcolumns).getA1Notation()).setBackground("blue"))
 }
 
-function hehe(){
-  addUser("EMS Lieutenant","EMS","THisDiscord","thisroblox","1000")
+function hehe_(){
+  addUser("EMS Lieutenant","","THisDiscord","thisroblox","1000")
 }
-
