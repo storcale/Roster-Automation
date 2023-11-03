@@ -14,6 +14,7 @@ If you want to use this code, of part of this code, just contact me by discord o
 ### /search-user [callsign] [division]
 
 Callsign: integer, the callsign of the person to search.
+
 Division: string, in which division (sheet) to search the user. 
 
 Method: GET http Request, query: command,callsign,division
@@ -21,8 +22,11 @@ Method: GET http Request, query: command,callsign,division
 ### /add-user [callsign] [rank] [discord] [roblox] [rank]
 
 Callsign: integer, the callsign of the person.
+
 Rank: string, the rank of the person: Where will the person added.
+
 Discord: The discord username of the person
+
 Roblox: The roblox username of the person
 
 Method: POST http request, query: command, callsign, rank, discord,roblox
