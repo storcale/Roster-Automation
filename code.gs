@@ -1,6 +1,6 @@
 
 // Read README.MD before going trough the code.
-// Version v3.1 , deployement version: 3.0
+// Version v3.1 , deployement version: 3.1
 
 var ss = SpreadsheetApp.getActiveSpreadsheet()
 var emssheet = ss.getSheetByName("EMS")
@@ -209,7 +209,7 @@ function doPost(e) {
    if( user.rank != error404){
     user.push(callsign,rank,discord,roblox,division)
     Logger.log("Sucessfully added user to the roster.")
-    var output = "\n\nSucessfully added " + user.discord +"to the roster."
+    var output = "\n\nSucessfully added " + user.discord +" to the roster."
     return ContentService.createTextOutput(log + output ).setMimeType(ContentService.MimeType.TEXT);
    }else{
       var error = "**Error 404:** No rank named like this was found."
@@ -218,6 +218,7 @@ function doPost(e) {
   break
   }
 }
+
 
 
 function searchRank(rank,division){
