@@ -1,6 +1,6 @@
 
 // Read README.MD before going trough the code.
-// Version v3.1 , deployement version: 3.1
+// Version v3.3.0 , deployement version: 3.3.0
 
 var ss = SpreadsheetApp.getActiveSpreadsheet()
 var emssheet = ss.getSheetByName("EMS")
@@ -154,8 +154,45 @@ class Employee {
       sheet.moveRows(sheet.getRange(maxRows,maxcolumns),row)
       sheet.getRange("A15:" + sheet.getRange(15,maxcolumns).getA1Notation()).copyFormatToRange(sheet.getSheetId(),1,maxcolumns,row,row + 1)
       Logger.log("Sucessfully added " + discord + " to the roster in row " + row)
+    }}
+    remove(callsign,division){
+
+      var sheet = ss.getSheetByName(division)
+      var row = searchUser(callsign,division)
+      if(row == error404){
+        Logger.log("Error 404: No user with this callsign was found")
+        return error404
+      }else{
+        sheet.deleteRow(row)
+        Logger.log("Sucessfully deleted")
+      }
     }
-  }
+    edit(callsign,division,roblox,discord,newCallsign){
+      var user = new Employee(callsign,division)
+      var currentCallsign = user.Callsign
+      var currentDiscord = user.discord
+      var currentRoblox = user.roblox 
+      var sheet = ss.getSheetByName(division)
+      var row = searchUser(callsign,division)
+
+      if(row == error404){
+        Logger.log("Error 404. No user with this callsign was found")
+        return error404
+      }else{
+        if(newCallsign != null){
+         sheet.getRange(row,2).setValue(newCallsign)
+        }else if(discord != null){
+         sheet.getRange(row,5).setValue(discord)
+        }else if(roblox != null){
+          sheet.getRange(row,4).setValue(roblox)
+        }else{
+          Logger.log("No information was edited")
+          throw SyntaxError("No information was edites, please edit at least one information.")
+          
+        }
+      }
+      
+    }
 }
 
 function doGet(e) {
@@ -216,6 +253,38 @@ function doPost(e) {
       return ContentService.createTextOutput(error).setMimeType(ContentService.MimeType.TEXT);
    }
   break
+
+  case "removeUser":
+  var division = e.parameter.division
+  var callsign = e.parameter.callsign
+  var user = new Employee(callsign,division)
+  var discord = user.discord
+  if( searchRank(rank,division) != error404){
+   var output = "\n\nSucessfully removed " + user.discord + " from the roster"
+   user.remove(callsign,division)
+   return ContentService.createTextOutput(log + output ).setMimeType(ContentService.MimeType.TEXT)
+  }else{
+    var error = "**Error 404:** No user with this callsign was found"
+    return ContentService.createTextOutput(error).setMimeType(ContentService.MimeType.TEXT)
+  }
+  break
+
+  case "editUser":
+   var division = e.parameter.division
+   var callsign = e.parameter.callsign
+   var newCallsign = e.parameter.newCallsign
+   var discord = e.parameter.discord
+   var roblox = e.parameter.discord
+   if(searchUser(callsign,division) != error404){
+    var user = new Employee(callsign,division)
+    user.edit(callsign,division,roblox,discord,newCallsign)
+    var output = "\n\n"+ discord + "'s information was sucessfully edited. \n"
+    return ContentService.createTextOutput(log + output).setMimeType(ContentService.MimeType.TEXT)
+   }else{
+     var error = "**Error 404**: No user with this callsign was found"
+     return ContentService.createTextOutput(error).setMimeType(ContentService.MimeType.TEXT)
+   }
+  break
   }
 }
 
@@ -224,7 +293,7 @@ function doPost(e) {
 function searchRank(rank,division){
   var divisionSheet = ss.getSheetByName(division)
   var  column = divisionSheet.getRange("C:C")
-  var textFinder = column.createTextFinder(rank)
+  var textFinder = column.createTextFinder(rank).matchEntireCell(true)
   var rankCell = textFinder.findNext()
   if(rankCell == null){
     userCell = divisionSheet.getRange(5,5)
@@ -238,7 +307,7 @@ function searchUser(query,division) {
   
   var divisionSheet = ss.getSheetByName(division)
   var column = divisionSheet.getRange("B:B")
-  var textFinder = column.createTextFinder(query)
+  var textFinder = column.createTextFinder(query).matchEntireCell(true)
   var userCell = textFinder.findNext()
   if(userCell == null){
     userCell = divisionSheet.getRange(5,5)
