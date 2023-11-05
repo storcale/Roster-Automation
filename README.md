@@ -9,9 +9,13 @@ Note: You can't actually run the code without sending an http request. To test t
 This code is owned by me, and only me, the owner of the storcale@gmail.com google account.
 
 If you want to use this code, of part of this code, just contact me by discord or email :)
-## Current commands:
+## Current command:
 
-### /search-user [callsign] [division]
+## /roster
+
+Offers a menu displaying buttons for the actions that can be performed: Search,add, remove(not working yet)
+
+#### search [callsign] [division]
 
 Callsign: integer, the callsign of the person to search.
 
@@ -19,7 +23,7 @@ Division: string, in which division (sheet) to search the user.
 
 Method: GET http Request, query: command,callsign,division
 
-### /add-user [callsign] [rank] [discord] [roblox] [rank]
+#### add [callsign] [rank] [discord] [roblox] 
 
 Callsign: integer, the callsign of the person.
 
@@ -30,3 +34,6 @@ Discord: The discord username of the person
 Roblox: The roblox username of the person
 
 Method: POST http request, query: command, callsign, rank, discord,roblox
+
+#### remove
+Not working yet
