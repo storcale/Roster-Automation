@@ -23,7 +23,7 @@ Division: string, in which division (sheet) to search the user.
 
 Method: GET http Request, query: command,callsign,division
 
-#### add [callsign] [rank] [discord] [roblox] 
+#### add [callsign] [rank] [discord] [roblox]  [division]
 
 Callsign: integer, the callsign of the person.
 
@@ -33,6 +33,15 @@ Discord: The discord username of the person
 
 Roblox: The roblox username of the person
 
-Method: POST http request, query: command, callsign, rank, discord,roblox
+Division: string,in which division (sheet) the person is
 
-#### remove
+Method: POST http request, query: command, callsign, rank, discord,roblox,division
+
+#### remove [callsign] [division]
+
+Callsign: Integer, the callsign of the person to remove
+
+Division: string,in which division (sheet) the person is
+
+Method: POST http request, query: callsign,division
+
