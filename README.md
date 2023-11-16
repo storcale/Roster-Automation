@@ -13,7 +13,7 @@ If you want to use this code, of part of this code, just contact me by discord o
 
 ## /roster
 
-Offers a menu displaying buttons for the actions that can be performed: Search,add, remove(not working yet)
+Offers a menu displaying buttons for the actions that can be performed: Search,add, remove
 
 #### search [callsign] [division]
 
@@ -36,4 +36,3 @@ Roblox: The roblox username of the person
 Method: POST http request, query: command, callsign, rank, discord,roblox
 
 #### remove
-Not working yet
