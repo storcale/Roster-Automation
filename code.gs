@@ -1,6 +1,8 @@
 
 // Read README.MD before going trough the code.
-// Version v3.3.0 , deployement version: 3.3.0
+
+
+// Version v3.5.4 fixes
 
 var ss = SpreadsheetApp.getActiveSpreadsheet()
 var emssheet = ss.getSheetByName("EMS")
@@ -141,11 +143,10 @@ class Employee {
       Logger.log("Error 404: No rank named like this exist")
       return error404
     }else{
-      sheet.appendRow([abreviation,callsign,rank,roblox,discord
-      ])
-    //   sheet.getRange("J"+ row +":L"+row).insertCheckboxes()
-      //sheet.getRange(row,7).setDataValidation(SpreadsheetApp.newDataValidation().requireValueInList(["Active","Semi-Active","Inactive","LOA","Suspended","Reserve","N/A"]).build())
-     // sheet.getRange(row,8).setDataValidation(SpreadsheetApp.newDataValidation().requireValueInList(["Promotable","Pending","Suspended","Reserve","N/A"]).build())
+      sheet.appendRow([abreviation,callsign,rank,roblox,discord])
+      // sheet.getRange("J"+ row +":L"+row).insertCheckboxes()
+      // sheet.getRange(row,7).setDataValidation(SpreadsheetApp.newDataValidation().requireValueInList(["Active","Semi-Active","Inactive","LOA","Suspended","Reserve","N/A"]).build())
+      // sheet.getRange(row,8).setDataValidation(SpreadsheetApp.newDataValidation().requireValueInList(["Promotable","Pending","Suspended","Reserve","N/A"]).build())
      var log = sheet.getRange(15,16).getFormula()
      var hr = sheet.getRange(15,17).getValue()
      sheet.getRange(row,16).setValue(log)
@@ -169,9 +170,6 @@ class Employee {
     }
     edit(callsign,division,roblox,discord,newCallsign){
       var user = new Employee(callsign,division)
-      var currentCallsign = user.Callsign
-      var currentDiscord = user.discord
-      var currentRoblox = user.roblox 
       var sheet = ss.getSheetByName(division)
       var row = searchUser(callsign,division)
 
@@ -181,13 +179,11 @@ class Employee {
       }else{
         if(newCallsign != null){
          sheet.getRange(row,2).setValue(newCallsign)
-        }else if(discord != null){
          sheet.getRange(row,5).setValue(discord)
-        }else if(roblox != null){
           sheet.getRange(row,4).setValue(roblox)
         }else{
           Logger.log("No information was edited")
-          throw SyntaxError("No information was edites, please edit at least one information.")
+          throw SyntaxError("No information was edited, please edit at least one information.")
           
         }
       }
@@ -205,12 +201,13 @@ function doGet(e) {
 
   case "searchUser":
  
-   var queryCallsign = e.parameter.callsign; // Access query parameter named "vcallsign"
-   var queryDivision = e.parameter.division // Get query parameter "division"
+   var queryCallsign = e.parameter.callsign; 
+   var queryDivision = e.parameter.division;
+   Logger.log("Processing searchUser at " + date + " with query: " + queryDivision + " " + queryCallsign)
 
   if(searchUser(queryCallsign,queryDivision) != error404){
    var user = new Employee(queryCallsign,queryDivision)
-   var output = "\n" + "\n**Discord username:** " + user.discord + "\n**Roblox username**: " + user.roblox + "\n**Rank:** " + user.Rank + "\n**Divisions:** " + user.divisions + "\nCallsign: " + user.callsign + "\n"
+   var output = "\n" + "\n**Discord username:** " + user.discord + "\n**Roblox username**: " + user.roblox + "\n**Rank:** " + user.Rank + "\n**Divisions:** " + user.divisions + "\n**Callsign:** " + user.callsign + "\n"
    Logger.log(output)
    return ContentService.createTextOutput(log + output).setMimeType(ContentService.MimeType.TEXT)
   }else{
@@ -243,6 +240,7 @@ function doPost(e) {
   var roblox = e.parameter.roblox
   var callsign = e.parameter.callsign
   var user = new Employee(callsign,division,rank)
+  Logger.log("Processing addUser at " + date + " with query: " + division + " " + rank + "" + discord + " " + roblox + " " + callsign)
    if( user.rank != error404){
     user.push(callsign,rank,discord,roblox,division)
     Logger.log("Sucessfully added user to the roster.")
@@ -259,8 +257,9 @@ function doPost(e) {
   var callsign = e.parameter.callsign
   var user = new Employee(callsign,division)
   var discord = user.discord
-  if( searchRank(rank,division) != error404){
-   var output = "\n\nSucessfully removed " + user.discord + " from the roster"
+  Logger.log("Processing removeUser at " + date + " with query: " + division + " " + callsign + " .Found:  " + discord)
+  if( searchRank(user.Rank,division) != error404){
+   var output = "\n\nSucessfully removed " + discord + " from the roster"
    user.remove(callsign,division)
    return ContentService.createTextOutput(log + output ).setMimeType(ContentService.MimeType.TEXT)
   }else{
@@ -275,8 +274,9 @@ function doPost(e) {
    var newCallsign = e.parameter.newCallsign
    var discord = e.parameter.discord
    var roblox = e.parameter.discord
-   if(searchUser(callsign,division) != error404){
-    var user = new Employee(callsign,division)
+   var user = new Employee(callsign,division)
+   Logger.log("Processing editUser at " + date + " with query: " + division + " " + rank + "" + callsign + " " + roblox + " " + discord + " " + newCallsign)
+   if(user.Rank != error404){
     user.edit(callsign,division,roblox,discord,newCallsign)
     var output = "\n\n"+ discord + "'s information was sucessfully edited. \n"
     return ContentService.createTextOutput(log + output).setMimeType(ContentService.MimeType.TEXT)
@@ -316,3 +316,6 @@ function searchUser(query,division) {
     return userRow = userCell.getRow()
   }
 }
+
+
+
