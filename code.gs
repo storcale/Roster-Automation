@@ -2,9 +2,11 @@
 // Read README.MD before going trough the code.
 
 
-// Version v3.5.4 fixes
 
-var ss = SpreadsheetApp.getActiveSpreadsheet()
+// Version v3.5.5 
+// + Library acess
+
+var ss = SpreadsheetApp.openById('1MX5oXFd-eh6Rx0Z6Dbvhwdh71Iy9HiWXd4xuKHHdCAg');
 var emssheet = ss.getSheetByName("EMS")
 
 var error404 = "Error 404: Not found"
@@ -20,6 +22,7 @@ class Employee {
    * @param {string} division - MANDATORY: The division sheet of the employee
    * @param {string} rank - OPT: The rank of the employee
    * @param {number} row - MAND: The row of the employee
+   * @class
    * 
    */
   constructor(callsign,division,rank,row){
@@ -144,9 +147,13 @@ class Employee {
       return error404
     }else{
       sheet.appendRow([abreviation,callsign,rank,roblox,discord])
+
+     //The code with I tried to insert checkboxes and list
+
       // sheet.getRange("J"+ row +":L"+row).insertCheckboxes()
       // sheet.getRange(row,7).setDataValidation(SpreadsheetApp.newDataValidation().requireValueInList(["Active","Semi-Active","Inactive","LOA","Suspended","Reserve","N/A"]).build())
       // sheet.getRange(row,8).setDataValidation(SpreadsheetApp.newDataValidation().requireValueInList(["Promotable","Pending","Suspended","Reserve","N/A"]).build())
+      
      var log = sheet.getRange(15,16).getFormula()
      var hr = sheet.getRange(15,17).getValue()
      sheet.getRange(row,16).setValue(log)
@@ -190,7 +197,11 @@ class Employee {
       
     }
 }
-
+/**
+ * Function to receive web GET requests. Do not use in scripts.
+ * 
+ * @package
+ */
 function doGet(e) {
   // Handle GET request
   var log = "Processed at: " + date + ".";
@@ -224,7 +235,11 @@ function doGet(e) {
  }
 }
 
-
+/**
+ * Function to receive web POST requests. Do not use in scripts.
+ * 
+ * @private
+ */
 function doPost(e) {
   // Handle POST request
   var log = "Processed at: " + date + ".";
@@ -273,7 +288,7 @@ function doPost(e) {
    var callsign = e.parameter.callsign
    var newCallsign = e.parameter.newCallsign
    var discord = e.parameter.discord
-   var roblox = e.parameter.discord
+   var roblox = e.parameter.roblox
    var user = new Employee(callsign,division)
    Logger.log("Processing editUser at " + date + " with query: " + division + " " + rank + "" + callsign + " " + roblox + " " + discord + " " + newCallsign)
    if(user.Rank != error404){
@@ -316,6 +331,10 @@ function searchUser(query,division) {
     return userRow = userCell.getRow()
   }
 }
+
+
+
+
 
 
 
