@@ -1,3 +1,7 @@
+# ⚠️ This repo is archived
+This whole system has been replaced by the [LCFR API](https://github.com/storcale/LCFR-API) and by the [LCES Discord bot](https://github.com/LCFR-Development/lces-discord-bot)
+This project will no longer get maintained or receive updates.
+
 # Roster-Automation
 All the code of the Roster, and code for handling bot commands
 
